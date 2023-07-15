@@ -1,0 +1,7 @@
+
+/node_modules
+/public/uploads
+.env
+.env.backup
+.env.production
+
