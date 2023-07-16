@@ -1,9 +1,9 @@
 import fs from "fs";
 import Category from "../models/Category.js";
-const baseURL = process.env.IMAGE_BASE_URL;
+
 
 class CategoryController {
-  //find a product by  id
+  //find a Category by  id
   static categoryById = async (req, res, next, id) => {
     const category = await Category.findById(id);
 
@@ -22,13 +22,14 @@ class CategoryController {
   //all Category
   static allCategory = async (req, res) => {
     try {
+      const imageBaseURL = process.env.IMAGE_BASE_URL;
       const allCategory = await Category.find();
 
       // Update the image URL for each category
       const updatedCategoryList = allCategory.map((category) => {
         return {
           ...category._doc,
-          image: `${baseURL}/${category.image}`,
+          image: `${imageBaseURL}/${category.image}`,
         };
       });
 
@@ -47,7 +48,13 @@ class CategoryController {
 
   //singel Category
   static singleCategory = async (req, res) => {
-    return res.json(req.category);
+    const imageBaseURL = process.env.IMAGE_BASE_URL;
+    const category = req.category;
+    category.image = `${imageBaseURL}/${category.image}`;
+    res.status(200).json({
+      message: "Single Category",
+      data: category,
+    });
   };
 
   //store category
@@ -82,9 +89,9 @@ class CategoryController {
   //Category update or edit
   static update = async (req, res) => {
     const { name } = req.body;
+    const imageBaseURL = process.env.IMAGE_BASE_URL;
     let image = null; // Initialize image as null
     let existingCategory = req.category;
-    const imageBaseURL = process.env.IMAGE_BASE_URL;
     try {
       if (req.files && req.files.image) {
         // If a new image then delete the old image
@@ -118,18 +125,9 @@ class CategoryController {
 
   //delete category
   static delete = async (req, res) => {
-    const categoryId = req.params.id;
-
     try {
       // Find the category by ID
       const category = req.category;
-
-      if (!category) {
-        return res.status(404).json({
-          code: 404,
-          message: "Category not found.",
-        });
-      }
 
       // Delete the category's image file if it exists
       if (category.image) {

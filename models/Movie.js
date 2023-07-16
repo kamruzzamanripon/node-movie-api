@@ -16,7 +16,7 @@ const DataSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
-    images: { 
+    image: { 
         type: String, 
         required: true
     },

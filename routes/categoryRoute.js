@@ -1,9 +1,9 @@
 import express from "express";
 import CategoryController from "../controllers/CategoryController.js";
-import { categoryStoreValidator } from "../helpers/validator/categoryStoreValidator.js";
 import auth from "../middleware/auth.js";
 import fileFolderName from "../middleware/fileFolderName.js";
 import storage from "../middleware/fileUpload.js";
+import { categoryStoreValidator } from "../middleware/validator/categoryStoreValidator.js";
 
 const router = express.Router();
 
