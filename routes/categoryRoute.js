@@ -8,6 +8,7 @@ import { categoryStoreValidator } from "../middleware/validator/categoryStoreVal
 const router = express.Router();
 
 router.get("/all-category", CategoryController.allCategory);
+router.get("/category-wise-movies", CategoryController.categoryWiseMovie);
 router.get("/single-category/:categoryId", CategoryController.singleCategory);
 
 router.post(

@@ -8,15 +8,24 @@ import { movieStoreValidator } from "../middleware/validator/movieStoreValidator
 const router = express.Router();
 
 router.get("/all-movies", MovieController.allMovie);
+router.get("/top-movies", MovieController.topMovie);
 router.get("/single-movie/:movieId", MovieController.singleMovie);
 
-router.post(
+  router.post(
     "/movie-store",
     auth,
     movieStoreValidator,
     fileFolderName("movie"),
     storage.fields([{ name: "image", maxCount: 1 }]),
     MovieController.store
+  );
+
+  router.post(
+    "/ai-movie-store",
+    auth,
+    fileFolderName("movie"),
+    storage.fields([{ name: "image", maxCount: 1 }]),
+    MovieController.aiStore
   );
   
   router.put(

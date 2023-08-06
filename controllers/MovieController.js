@@ -1,4 +1,5 @@
 import fs from "fs";
+import { v4 } from "uuid";
 import Movie from '../models/Movie.js';
 
 class MovieController{
@@ -50,6 +51,40 @@ class MovieController{
     }
   };
 
+  //Top Movie
+  static topMovie = async (req, res) => {
+    try {
+      const imageBaseURL = process.env.IMAGE_BASE_URL;
+      const topMovies = await Movie.find()
+        .sort({ createdAt: -1 }) 
+        .populate('category_id')
+        .limit(8); 
+
+      // Update the image URL for each movie
+      const updatedTopMovies = topMovies.map((movie) => {
+        return {
+          ...movie._doc,
+          image: `${imageBaseURL}/${movie.image}`,
+          category_id: {
+            ...movie.category_id._doc,
+            image: `${imageBaseURL}/${movie.category_id.image}`,
+          },
+        };
+      });
+
+      res.status(200).json({
+        message: "Top 8 Movies",
+        data: updatedTopMovies,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        code: 500,
+        message: "Internal server error.",
+      });
+    }
+  };
+
   //singel Category
   static singleMovie = async (req, res) => {
     const imageBaseURL = process.env.IMAGE_BASE_URL;
@@ -76,6 +111,44 @@ class MovieController{
         image: image,
       });
 
+      res.status(200).json({
+        message: "Movie Create Successfully",
+        data: movieInfo,
+      });
+    } catch (err) {
+      res.status(500).json({
+        code: 500,
+        message: "Internal server error.",
+      });
+    }
+  };
+
+  //Ai movie store
+  static aiStore = async (req, res) => {
+   
+    const { title, category_id, description, image } = req.body;
+    
+    console.log('node-1', req.body)
+    
+    
+    // Convert the base64 image data to a buffer
+    const imageBuffer = Buffer.from(image, 'base64');
+    
+    // Generate a unique filename for the image using UUID
+    const imageName = `${v4()}.jpg`;
+  
+    try {
+      // Save the image to a directory (you can change the path as needed)
+      fs.writeFileSync(`./public/uploads/movie/${imageName}`, imageBuffer);
+  
+      // Save the movie information to the database
+      const movieInfo = await Movie.create({
+        title,
+        description,
+        category_id,
+        image: imageName,
+      });
+  
       res.status(200).json({
         message: "Movie Create Successfully",
         data: movieInfo,

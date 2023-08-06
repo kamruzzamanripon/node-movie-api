@@ -1,5 +1,6 @@
 import fs from "fs";
 import Category from "../models/Category.js";
+import Movie from "../models/Movie.js";
 
 
 class CategoryController {
@@ -45,6 +46,45 @@ class CategoryController {
       });
     }
   };
+
+  //Category wise movies
+  static categoryWiseMovie = async (req, res) => {
+    try {
+      const imageBaseURL = process.env.IMAGE_BASE_URL;
+      const allCategories = await Category.find();
+
+      // Update the image URL for each category
+      const updatedCategoryList = await Promise.all(allCategories.map(async (category) => {
+        // Find all movies related to this category
+        const movies = await Movie.find({ category_id: category._id });
+
+        // Update the image URL for each movie
+        const updatedMovies = movies.map((movie) => {
+          return {
+            ...movie._doc,
+            image: `${imageBaseURL}/${movie.image}`,
+          };
+        });
+
+        return {
+          ...category._doc,
+          image: category.image ? `${imageBaseURL}/${category.image}` : null,
+          movies: updatedMovies,
+        };
+      }));
+
+      res.status(200).json({
+        message: "Category-wise Movies",
+        data: updatedCategoryList,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        code: 500,
+        message: "Internal server error.",
+      });
+    }
+};
 
   //singel Category
   static singleCategory = async (req, res) => {
