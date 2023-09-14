@@ -4,9 +4,10 @@ import mongoose from "mongoose";
 const connectiondb = async (DATABASE_URL) =>  {
     try{
         const options = {
-            //user:process.env.MONGOOSE_DB_USER,
-            //pass:process.env.MONGOOSE_DB_PASS,
-            dbName:process.env.DB_NAME
+            user:process.env.DBUSERNAME,
+            pass:process.env.DBPASSWORD,
+            dbName:process.env.DBNAME,
+            authSource: process.env.DBAUTHSOURCE,
         };
     
         const connectionResult = await mongoose.connect(DATABASE_URL, options)

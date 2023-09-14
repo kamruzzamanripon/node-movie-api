@@ -1,3 +1,9 @@
 PORT= 8000
 DATABASE_URL = "mongodb://localhost:27017"
 IMAGE_BASE_URL = "http://127.0.0.1:8000"
+
+
+DBNAME = "movie_api"
+DBUSERNAME = "etihan"
+DBPASSWORD = "Your_Database_Password"
+DBAUTHSOURCE = "movie_api"
