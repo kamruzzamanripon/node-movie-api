@@ -6,7 +6,7 @@ const connectiondb = async (DATABASE_URL) =>  {
         const options = {
             //user:process.env.MONGOOSE_DB_USER,
             //pass:process.env.MONGOOSE_DB_PASS,
-            dbName:'movie_api'
+            dbName:process.env.DB_NAME
         };
     
         const connectionResult = await mongoose.connect(DATABASE_URL, options)
