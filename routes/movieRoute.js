@@ -13,7 +13,7 @@ router.get("/single-movie/:movieId", MovieController.singleMovie);
 
   router.post(
     "/movie-store",
-    auth,
+    //auth,
     movieStoreValidator,
     fileFolderName("movie"),
     storage.fields([{ name: "image", maxCount: 1 }]),
@@ -22,7 +22,7 @@ router.get("/single-movie/:movieId", MovieController.singleMovie);
 
   router.post(
     "/ai-movie-store",
-    auth,
+    //auth,
     fileFolderName("movie"),
     storage.fields([{ name: "image", maxCount: 1 }]),
     MovieController.aiStore

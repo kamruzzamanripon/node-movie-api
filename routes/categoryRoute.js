@@ -13,7 +13,7 @@ router.get("/single-category/:categoryId", CategoryController.singleCategory);
 
 router.post(
   "/category-store",
-  auth,
+  //auth,
   categoryStoreValidator,
   fileFolderName("category"),
   storage.fields([{ name: "image", maxCount: 1 }]),
