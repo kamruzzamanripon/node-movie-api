@@ -47,3 +47,5 @@ router.get("/single-movie/:movieId", MovieController.singleMovie);
 
   export default router;
   
+
+  // note this is not proper writing for router. we will need more focus to stable version.
