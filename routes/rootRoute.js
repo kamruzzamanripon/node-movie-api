@@ -28,6 +28,7 @@ const route = (app) => {
       });
     }
   });
+  
   app.use("*", (req, res) =>
     res.status(404).json({ status: "fail", data: "Route does not exist" })
   );

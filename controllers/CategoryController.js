@@ -20,6 +20,7 @@ class CategoryController {
     next();
   };
 
+
   //all Category
   static allCategory = async (req, res) => {
     try {
